@@ -1,0 +1,144 @@
+﻿@model IEnumerable<GymMGT.Models.TraineeDetailsViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="row">
+
+    <div class="col-md-12">
+        <h3>
+            GTMA (Gym Trainee Management App) - Gym Trainees
+        </h3>
+
+        <input id="myInput" type="text" placeholder="Search..">
+        <br>
+        <br>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("Image")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("FirstName")
+                    </th>
+                    <th>
+                        @Html.DisplayName("LastName")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("ContactNo")
+                    </th>
+
+                    <th>
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("Age")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Height")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Weight")
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("Gender")
+                    </th>
+                    <th>
+                        Blood Group
+                    </th>
+                    <th>
+                        @Html.DisplayName("Address")
+                    </th>
+                    <th>
+                        <a asp-action="AddOrEdit" class="btn btn-sm btn-success" style="width:92px !important">
+                            <i class="fa-solid fa-plus"></i>
+                            New
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                <tr>
+
+                    <td>
+
+                            <img src="@("~/images/"+item.GymTraineeVM.ImageName)" asp-append-version="true" width="50px" height="50px" />
+
+                    </td>
+
+                    <td>
+                            @Html.DisplayFor(modelItem => item.GymTraineeVM.FirstName)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.GymTraineeVM.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GymTraineeVM.ContactNo)
+                    </td>
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TrainingLevelVM.TrainingLevelName)
+                    </td>
+
+
+                    <td>
+                            @Html.DisplayFor(modelItem => item.GymTraineeVM.Age)
+                    </td>
+
+                    <td>
+                            @Html.DisplayFor(modelItem => item.GymTraineeVM.Height)
+                    </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GymTraineeVM.Weight)
+                        </td>
+
+                    <td>
+                            @Html.DisplayFor(modelItem => item.GymTraineeVM.Gender)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.BloodGroupVM.BloodGroupName)
+                            
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GymTraineeVM.Address)
+                    </td>
+                    <td>
+
+                        <form asp-action="Delete" asp-route-id="@item.GymTraineeVM.TraineeId">
+                            <div class="btn-group btn-group-sm">
+                                
+                                <a asp-controller="FeeVoucher" asp-action="Create" asp-route-id="@item.GymTraineeVM.TraineeId" class="btn btn-info">
+                                        <i class="fa-solid fa-dollar"></i>
+                                </a>
+
+                                <a asp-action="AddOrEdit" asp-route-id="@item.GymTraineeVM.TraineeId" class="btn btn-warning">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Are you sure? ,1111111you want to delete the selected record')">
+                                    <i class="far fa-trash-alt"> </i>
+                                </button>
+                            </div>
+
+
+                        </form>
+
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+

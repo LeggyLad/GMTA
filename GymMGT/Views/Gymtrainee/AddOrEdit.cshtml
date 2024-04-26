@@ -1,0 +1,178 @@
+﻿@model GymMGT.Models.GymTrainee
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    // Function to set the selected blood group ID (for validation purposes)
+    function SetBloodGroup() {
+        $("#BloodGroupID").val($("#drpBloodGroupList option:selected").val());
+        //alert($("#drpBloodGroupList option:selected").val())
+        //$("#BloodGroupID").val(100); Used these codes to determine if the right id value was associated with each BloodGroup selection
+    }
+
+    // Function to set the selected training level ID (for validation purposes)
+    function SetTraingingLevelId() {
+        $("#TrainingLevelID").val($("#drpTrainingLevelList option:selected").val());
+    }
+
+    // Function to set the selected trainee height (for validation purposes)
+    function SetTraineeHeight() {
+        $("#Height").val($("#drpheight option:selected").val());
+    }
+
+    // Function to validate dropdown selections
+    function Validateddl() {
+
+        var selectedValue_bg = $("#drpBloodGroupList option:selected").val();
+        if (selectedValue_bg == "-1") {
+            alert("Please select blood group.");
+            return false;
+        }
+        var selectedValue_tl = $("#drpTrainingLevelList option:selected").val();
+        if (selectedValue_tl == "-1") {
+            alert("Please select training level.");
+            return false;
+        }
+
+        return true;
+    }
+
+
+</script>
+
+<!-- JavaScript for displaying message if ViewBag.Message is not null -->
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#divData").empty().html('@ViewBag.Message');
+        });
+    </script>
+}
+
+<!-- Form for adding or editing gym trainee information -->
+<div class="row">
+    <div class="col-md-6 offset-md-4">
+        <h3>Gym Trainee information</h3>
+        <hr />
+        <form asp-action="AddOrEdit" enctype="multipart/form-data" autocomplete="off">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TraineeId" />
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age" class="control-label"></label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label"> Height </label>
+                <input type="hidden" asp-for="Height" value="hidden" value="" />
+                <select id="drpheight" name="drpheight" asp-for=Height class="form-control" asp-items="@ViewBag.Height_TL" onchange="SetTraineeHeight()">
+                    <option value="-1">--Select Height--</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Weight" class="control-label"> Weight In KG. </label>
+                <input asp-for="Weight" class="form-control" />
+                <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <br />
+                <input type="radio" name="gender" value="Male" asp-for="Gender" /> Male |
+                <input type="radio" name="gender" value="Female" asp-for="Gender" /> Female |
+                <input type="radio" name="gender" value="Undefined" asp-for="Gender" /> Undefined
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label"> Blood Group </label>
+                <input type="hidden" asp-for="BloodGroupID" value="hidden" value="" />
+                <select id="drpBloodGroupList" asp-for=BloodGroupID name="drpBloodGroupList" class="form-control" asp-items="@ViewBag.BloodGroups" onchange="SetBloodGroup()">
+                    <option value="-1">--Select Blood Group--</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label"> Training Level </label>
+                <input type="hidden" asp-for="TrainingLevelID" value="hidden" value="" />
+                <select id="drpTrainingLevelList" asp-for=TrainingLevelID name="drpTrainingLevelList" class="form-control" asp-items="@ViewBag.DPL_TL" onchange="SetTraingingLevelId()">
+                    <option value="-1">--Select Training Level--</option>
+
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MonthlyFee" class="control-label"> Monthly Fee</label>
+                <input asp-for="MonthlyFee" class="form-control" />
+                <span asp-validation-for="MonthlyFee" class="text-danger"></span>
+            </div>
+
+            @if (Model.ImageName != null)
+            {
+                <img src="@("~/Images/"+ Model.ImageName )" asp-append-version="true" width="50px" height="50px" />
+            }
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <br />
+                <input asp-for="ImageFile" id="Profileimg" accept="image/*" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                <img id="imgpreview" src="#" style="display:none" width="60px" height="80px" alt="Preview Img" />
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary w-100" onclick="Validateddl()" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <a asp-action="Index" class="btn btn-secondary w-100">View All</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<!-- JavaScript for previewing uploaded image -->
+<script>
+    $(document).ready(function () {
+        console.log("document loaded");
+        //$("#drpBloodGroupList option:selected").val();
+        $("#drpTrainingLevelList option:selected").val()
+
+        $("#BloodGroupID").val($("#drpBloodGroupList option:selected").val());
+        $("#TrainingLevelID").val($("#drpTrainingLevelList option:selected").val());
+        $("#Height").val($("#drpheight option:selected").val());
+
+        // Previewing uploaded image
+        $("#Profileimg").change(function () {
+            if (this.files && this.files[0]) {
+                $('#imgpreview').show();
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imgpreview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+</script>

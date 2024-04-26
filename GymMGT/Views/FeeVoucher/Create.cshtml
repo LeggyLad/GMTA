@@ -1,0 +1,95 @@
+﻿@model GymMGT.Models.FeeVoucherDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div>
+    <h4>Fee Collection Details</h4>
+    <hr />
+     <form asp-action="Create" enctype="multipart/form-data" autocomplete="off">
+      
+    <div class="row">
+        <div class="col-md-6">
+            <div class="p-3 mb-2 bg-primary text-white">Basic Information</div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="GymTraineeVM.FirstName" class="control-label"></label>
+                    <input asp-for="GymTraineeVM.FirstName" class="form-control" readonly="true" />
+                    <span asp-validation-for="GymTraineeVM.FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="GymTraineeVM.LastName" class="control-label"></label>
+                    <input asp-for="GymTraineeVM.LastName" class="form-control" readonly="true" />
+                    <span asp-validation-for="GymTraineeVM.LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="GymTraineeVM.Address" class="control-label"></label>
+                    <input asp-for="GymTraineeVM.Address" class="form-control" readonly="true" />
+                    <span asp-validation-for="GymTraineeVM.Address" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="GymTraineeVM.MonthlyFee" class="control-label"></label>
+                    <input asp-for="GymTraineeVM.MonthlyFee" class="form-control" readonly="true" />
+                    <span asp-validation-for="GymTraineeVM.MonthlyFee" class="text-danger"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="p-3 mb-2 bg-secondary text-white">Fee Information</div>
+
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label asp-for="MonthlyFeeVoucherVM.FeeDate" class="control-label"></label>
+                        <input asp-for="MonthlyFeeVoucherVM.FeeDate" value="@DateTime.Today.ToString("yyyy-MM-dd")" class=" form-control" />
+                    <span asp-validation-for="MonthlyFeeVoucherVM.FeeDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="MonthlyFeeVoucherVM.Remarks" class="control-label"></label>
+                    <br />
+                    <textarea asp-for="MonthlyFeeVoucherVM.Remarks" rows="9" cols="67"></textarea>
+                    <span asp-validation-for="MonthlyFeeVoucherVM.Remarks" class="text-danger"></span>
+
+                    <input  asp-for="MonthlyFeeVoucherVM.TraineeId" class="form-control" hidden="hidden"  value="@Html.ValueFor(o => o.GymTraineeVM.TraineeId)"  />
+                </div>
+            </div>
+        </div>
+
+
+         
+
+    </div>
+
+        <div class="row">
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <a asp-action="Index" class="btn btn-secondary w-100">View All</a>
+                </div>
+                
+            </div>
+       
+              <div class="col-md-6">
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary w-100" />
+            </div>
+           </div>
+
+        </div>
+
+    </form>
+</div>
+
+@*<div>
+    <a asp-action="Edit" as /1p-route-id ="@Model.GymTraineeVM.TraineeId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>*@

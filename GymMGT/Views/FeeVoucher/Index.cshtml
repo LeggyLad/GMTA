@@ -1,0 +1,160 @@
+﻿@model IEnumerable<GymMGT.Models.TraineeDetailsViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+<h1>GTMA (Gym Trainee Management App) - Fee Collection List</h1>
+
+<!-- Form for Filtering -->
+<div class="form-group">
+    <form method="post">
+        <!-- Radio Buttons for Filtering -->
+        <div class="row mt-2">
+            <div class="col-md-3" style="max-width:20%">
+                <div class="form-group">
+                    <!-- Radio Buttons for Filtering -->
+                    @if (ViewBag.Selectedbutton == "list")
+                    {
+                        <input type="radio" value="list" name="selected_rbt" checked /> <label>List</label>
+                    }
+                    else
+                    {
+                        <input type="radio" value="list" name="selected_rbt" checked /> <label>List</label>
+                    }
+                    @if (ViewBag.Selectedbutton == "Paid")
+                    {
+                        <input type="radio" value="Paid" name="selected_rbt" checked /> <label>Paid</label>
+                    }
+                    else
+                    {
+                        <input type="radio" value="Paid" name="selected_rbt" /> <label>Paid</label>
+                    }
+
+
+                    @if (ViewBag.Selectedbutton == "Un-Paid")
+                    {
+                        <input type="radio" value="Un-Paid" name="selected_rbt" checked /> <label>Un-Paid</label>
+                    }
+                    else
+                    {
+                        <input type="radio" value="Un-Paid" name="selected_rbt" /> <label>Un-Paid</label>
+                    }
+                </div>
+            </div>
+            <!-- Date Selection -->
+            <div class="col-md-9">
+                <div class="form-group">
+                    <label asp="" class="control-label" style="margin-right:10px"> Current Date </label>
+                    @if (ViewBag.selectedDate != null)
+                    {
+                        <input id="selectedDate" type="datetime-local" name="selectedDate" value="@ViewBag.selectedDate" />
+                    }
+                    else
+                    {
+                        <input id="selectedDate" type="datetime-local" name="selectedDate" value="" />
+                    }
+
+                    <input type="submit" value="Get - Record(s) " onclick="location.href='@Url.Action("Index", "Feevoucher")'" class="btn btn-sm btn-outline-primary" style="margin-left:5px" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Table for displaying fee collection records -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GymTraineeVM.TraineeId)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.GymTraineeVM.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GymTraineeVM.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GymTraineeVM.ContactNo)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.GymTraineeVM.Address)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.MonthlyFeeVoucherVM.Remarks)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.GymTraineeVM.Feepaid_Status)
+            </th>
+
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Loop through each fee collection record -->
+        @foreach (var item in Model)
+        {
+            <tr>
+                <!-- Displaying record details -->
+                <td>
+                    @Html.DisplayFor(modelItem => item.GymTraineeVM.TraineeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GymTraineeVM.FirstName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.GymTraineeVM.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GymTraineeVM.ContactNo)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.GymTraineeVM.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MonthlyFeeVoucherVM.Remarks)
+                </td>
+                <td>
+                    <!-- Displaying fee payment status -->
+                    @if (item.MonthlyFeeVoucherVM != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.MonthlyFeeVoucherVM.Status)
+                        <br />
+                        <!-- Link to print voucher -->
+                        @Html.ActionLink("Print", "EmployeeReport", "Report", new { id = item.MonthlyFeeVoucherVM.MonthlyFeeID })
+
+                    }
+                    else
+                    {
+                        <!-- Displaying options for unpaid records -->
+                        <span>Not Paid Yet</span>
+                        <br />
+                        @Html.ActionLink("Pay Now", "Create", new { id = item.GymTraineeVM.TraineeId })
+
+                    }
+                </td>
+                <td>
+                    <!-- Actions for each record -->
+                    @if (item.MonthlyFeeVoucherVM != null)
+                    {
+                        <!-- Form for deleting a record -->
+                        <form asp-action="Delete" asp-route-id="@item.MonthlyFeeVoucherVM.MonthlyFeeID">
+
+                            <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Are you sure? ,you want to delete the selected record')">
+                                <i class="far fa-trash-alt"> </i>
+                            </button>
+
+                        </form>
+
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
